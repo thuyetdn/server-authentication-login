@@ -35,6 +35,7 @@ router.post('/users/login', async(req, res) => {
 
 router.get('/users/me', auth, async(req, res) => {
     // View logged in user profile
+    res.header({ "Access-Control-Allow-Origin": "*",})
     res.send(req.user)
 })
 
@@ -45,7 +46,8 @@ router.post('/users/me/logout', auth, async (req, res) => {
             return token.token != req.token
         })
         await req.user.save()
-        res.send()
+        res.header({ "Access-Control-Allow-Origin": "*",})
+        res.send("Logout Success!")
     } catch (error) {
         res.status(500).send(error)
     }
@@ -56,6 +58,7 @@ router.post('/users/me/logoutall', auth, async(req, res) => {
     try {
         req.user.tokens.splice(0, req.user.tokens.length)
         await req.user.save()
+        res.header({ "Access-Control-Allow-Origin": "*",})
         res.send()
     } catch (error) {
         res.status(500).send(error)
